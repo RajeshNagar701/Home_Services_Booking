@@ -192,10 +192,14 @@ const ServiceDetails = () => {
             <div className="hs-card p-4 mb-4 bg-white">
               <div className="position-relative mb-4 overflow-hidden rounded-4">
                 <img
-                  src={service.coverImage}
+                  src={service.coverImage || 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800'}
                   alt={service.title}
                   className="w-100"
                   style={{ maxHeight: '380px', objectFit: 'cover' }}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800';
+                  }}
                 />
                 <span className="position-absolute top-0 end-0 m-3 badge bg-dark bg-opacity-75 rounded-pill px-3 py-2">
                   <i className="bi bi-clock me-1"></i> {service.durationMinutes} Minutes Service

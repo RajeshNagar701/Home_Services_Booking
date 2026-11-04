@@ -232,10 +232,14 @@ const ServicesCatalog = () => {
                 <div className="hs-card hs-card-interactive h-100 d-flex flex-column overflow-hidden">
                   <div className="position-relative">
                     <img
-                      src={service.coverImage}
+                      src={service.coverImage || 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800'}
                       alt={service.title}
                       className="w-100"
                       style={{ height: '210px', objectFit: 'cover' }}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800';
+                      }}
                     />
                     <span className="position-absolute top-0 end-0 m-2 badge bg-dark bg-opacity-75 rounded-pill px-3 py-1 small">
                       <i className="bi bi-clock me-1"></i> {service.durationMinutes} mins

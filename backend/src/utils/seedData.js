@@ -458,7 +458,7 @@ const seedDatabase = async () => {
       // AC Services
       { title: 'AC General Service', catSlug: 'ac-repair-maintenance', price: 599, dur: 60, pIdx: 6, img: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=800' },
       { title: 'AC Installation', catSlug: 'ac-repair-maintenance', price: 1499, dur: 120, pIdx: 0, img: 'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?w=800' },
-      { title: 'Gas Refill', catSlug: 'ac-repair-maintenance', price: 1999, dur: 90, pIdx: 6, img: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?w=800' },
+      { title: 'Gas Refill', catSlug: 'ac-repair-maintenance', price: 1999, dur: 90, pIdx: 6, img: 'https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?w=800' },
       { title: 'AC Repair', catSlug: 'ac-repair-maintenance', price: 499, dur: 60, pIdx: 6, img: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800' },
       { title: 'AC Uninstallation', catSlug: 'ac-repair-maintenance', price: 799, dur: 60, pIdx: 0, img: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800' },
 
@@ -487,12 +487,12 @@ const seedDatabase = async () => {
       { title: 'Refrigerator Repair', catSlug: 'appliance-repair', price: 499, dur: 60, pIdx: 2, img: 'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=800' },
       { title: 'Washing Machine Repair', catSlug: 'appliance-repair', price: 549, dur: 60, pIdx: 2, img: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=800' },
       { title: 'Microwave Oven Repair', catSlug: 'appliance-repair', price: 399, dur: 45, pIdx: 2, img: 'https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=800' },
-      { title: 'Water Purifier / RO Service', catSlug: 'appliance-repair', price: 449, dur: 45, pIdx: 2, img: 'https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=800' },
+      { title: 'Water Purifier / RO Service', catSlug: 'appliance-repair', price: 449, dur: 45, pIdx: 2, img: 'https://images.unsplash.com/photo-1585670149967-b4f4da88cc9f?w=800' },
       { title: 'Geyser / Water Heater Repair', catSlug: 'appliance-repair', price: 399, dur: 45, pIdx: 2, img: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800' },
 
       // Pest Control
       { title: 'Cockroach Control', catSlug: 'pest-control', price: 699, dur: 45, pIdx: 7, img: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=800' },
-      { title: 'Termite Treatment', catSlug: 'pest-control', price: 1899, dur: 120, pIdx: 7, img: 'https://images.unsplash.com/photo-1541888946425-d0fbb186f5f8?w=800' },
+      { title: 'Termite Treatment', catSlug: 'pest-control', price: 1899, dur: 120, pIdx: 7, img: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800' },
       { title: 'Bed Bug Control', catSlug: 'pest-control', price: 1199, dur: 90, pIdx: 1, img: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800' },
       { title: 'Mosquito Fogging', catSlug: 'pest-control', price: 799, dur: 45, pIdx: 7, img: 'https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=800' },
       { title: 'Rodent Control', catSlug: 'pest-control', price: 899, dur: 60, pIdx: 7, img: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=800' }
