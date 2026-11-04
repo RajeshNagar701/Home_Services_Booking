@@ -1,0 +1,332 @@
+{
+  "info": {
+    "_postman_id": "homeserve-api-collection-2026",
+    "name": "HomeServe Technologies REST API Collection",
+    "description": "Comprehensive Postman collection for all 4 roles: Super Admin, Customer, Service Provider, and Technician.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api", "type": "string" },
+    { "key": "authToken", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@homeserve.tech\",\n  \"password\": \"AdminPassword123!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Customer Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@gmail.com\",\n  \"password\": \"CustomerPassword123!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Provider Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"apex.homes@homeserve.tech\",\n  \"password\": \"ProviderPassword123!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Technician Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rahul.tech@homeserve.tech\",\n  \"password\": \"TechPassword123!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Get Current User (Me)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@gmail.com\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/forgot-password", "host": ["{{baseUrl}}"], "path": ["auth", "forgot-password"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Services & Catalog",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/categories", "host": ["{{baseUrl}}"], "path": ["categories"] }
+          }
+        },
+        {
+          "name": "Search & Filter Services",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/services?search=ac&limit=10&page=1", "host": ["{{baseUrl}}"], "path": ["services"], "query": [{ "key": "search", "value": "ac" }] }
+          }
+        },
+        {
+          "name": "Get Service Details By ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/services/:id", "host": ["{{baseUrl}}"], "path": ["services", ":id"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Booking Engine",
+      "item": [
+        {
+          "name": "Create Booking (Customer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serviceId\": \"<SERVICE_ID>\",\n  \"bookingDate\": \"2026-12-15\",\n  \"timeSlot\": \"10:00 - 12:00\",\n  \"serviceAddress\": {\n    \"streetAddress\": \"Flat 501, Palm Grove\",\n    \"city\": \"Mumbai\",\n    \"state\": \"Maharashtra\",\n    \"pincode\": \"400050\",\n    \"contactPhone\": \"+91 9820011223\"\n  },\n  \"problemDescription\": \"Appliance making rattling noise\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/bookings", "host": ["{{baseUrl}}"], "path": ["bookings"] }
+          }
+        },
+        {
+          "name": "Get Customer Bookings",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/bookings/my-bookings", "host": ["{{baseUrl}}"], "path": ["bookings", "my-bookings"] }
+          }
+        },
+        {
+          "name": "Reschedule Booking",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newDate\": \"2026-12-16\",\n  \"newTimeSlot\": \"14:00 - 16:00\",\n  \"reason\": \"Schedule change\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/bookings/:id/reschedule", "host": ["{{baseUrl}}"], "path": ["bookings", ":id", "reschedule"] }
+          }
+        },
+        {
+          "name": "Cancel Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cancellationReason\": \"Plans changed\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/bookings/:id/cancel", "host": ["{{baseUrl}}"], "path": ["bookings", ":id", "cancel"] }
+          }
+        },
+        {
+          "name": "Provider Accept Booking",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/bookings/:id/accept", "host": ["{{baseUrl}}"], "path": ["bookings", ":id", "accept"] }
+          }
+        },
+        {
+          "name": "Provider Assign Technician",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"technicianId\": \"<TECH_ID>\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/bookings/:id/assign-technician", "host": ["{{baseUrl}}"], "path": ["bookings", ":id", "assign-technician"] }
+          }
+        },
+        {
+          "name": "Technician Status Progression",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"on_the_way\",\n  \"remarks\": \"Departed workshop\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/bookings/:id/technician-status", "host": ["{{baseUrl}}"], "path": ["bookings", ":id", "technician-status"] }
+          }
+        },
+        {
+          "name": "Technician Complete Job",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"technicianRemarks\": \"Service executed perfectly\",\n  \"completionImages\": [\"https://example.com/ac_done.jpg\"]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/bookings/:id/complete", "host": ["{{baseUrl}}"], "path": ["bookings", ":id", "complete"] }
+          }
+        },
+        {
+          "name": "Get Booking Invoice",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/bookings/:id/invoice", "host": ["{{baseUrl}}"], "path": ["bookings", ":id", "invoice"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Payments & Webhooks",
+      "item": [
+        {
+          "name": "Create Razorpay Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookingId\": \"<BOOKING_ID>\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/payments/create-order", "host": ["{{baseUrl}}"], "path": ["payments", "create-order"] }
+          }
+        },
+        {
+          "name": "Verify Payment Signature",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookingId\": \"<BOOKING_ID>\",\n  \"razorpayOrderId\": \"order_xxx\",\n  \"razorpayPaymentId\": \"pay_xxx\",\n  \"razorpaySignature\": \"sig_xxx\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/payments/verify", "host": ["{{baseUrl}}"], "path": ["payments", "verify"] }
+          }
+        },
+        {
+          "name": "Razorpay Webhook Receiver",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-razorpay-signature", "value": "<HMAC_SHA256_SIGNATURE>" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event\": \"payment.captured\",\n  \"payload\": {\n    \"payment\": {\n      \"entity\": {\n        \"id\": \"pay_mock_123\",\n        \"order_id\": \"order_mock_123\",\n        \"amount\": 94900,\n        \"status\": \"captured\"\n      }\n    }\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/payments/webhook", "host": ["{{baseUrl}}"], "path": ["payments", "webhook"] }
+          }
+        },
+        {
+          "name": "Admin Process Refund",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Cancellation warranty claim\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/payments/:id/refund", "host": ["{{baseUrl}}"], "path": ["payments", ":id", "refund"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Complaints & Reviews",
+      "item": [
+        {
+          "name": "Submit Review (Completed Booking)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookingId\": \"<BOOKING_ID>\",\n  \"rating\": 5,\n  \"comment\": \"Excellent service, prompt and clean!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/reviews", "host": ["{{baseUrl}}"], "path": ["reviews"] }
+          }
+        },
+        {
+          "name": "Raise Complaint",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookingId\": \"<BOOKING_ID>\",\n  \"subject\": \"Technician arrived late\",\n  \"description\": \"Technician arrived 30 minutes after agreed slot.\",\n  \"priority\": \"medium\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/complaints", "host": ["{{baseUrl}}"], "path": ["complaints"] }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+name: CI / CD Pipeline
+
+on:
+  push:
+    branches: [ main, development ]
+  pull_request:
+    branches: [ main, development ]
+
+jobs:
+  backend-test:
+    name: Backend Tests & Security Checks
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install Backend Dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: Run Backend Integration & Security Tests
+        env:
+          PORT: 5001
+          MONGODB_URI: mongodb://127.0.0.1:27017/homeserve_test
+          JWT_SECRET: test_secret_key_ci_cd_32_bytes_long_string
+          JWT_REFRESH_SECRET: test_refresh_secret_key_ci_cd_32_bytes
+        run: |
+          cd backend
+          npm test
+
+  frontend-build:
+    name: Frontend Build & Verification
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Build Frontend Application
+        run: |
+          cd frontend
+          npm run build

@@ -1,0 +1,24 @@
+{
+  "name": "homeserve-technologies",
+  "version": "1.0.0",
+  "description": "HomeServe Technologies - Multi-Vendor Home Services Booking SaaS Platform",
+  "private": true,
+  "scripts": {
+    "install:all": "npm --prefix backend install && npm --prefix frontend install",
+    "build:frontend": "npm --prefix frontend install && npm --prefix frontend run build",
+    "start:backend": "npm --prefix backend start",
+    "seed": "npm --prefix backend run seed",
+    "test": "npm --prefix backend test"
+  },
+  "keywords": [
+    "homeserve",
+    "saas",
+    "marketplace",
+    "booking",
+    "react",
+    "express",
+    "mongodb"
+  ],
+  "author": "HomeServe Technologies Team",
+  "license": "ISC"
+}
