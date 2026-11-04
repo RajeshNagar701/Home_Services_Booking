@@ -1,11 +1,13 @@
-# Netlify Production Deployment Configuration
 [build]
   base = "frontend"
   publish = "dist"
   command = "npm run build"
 
-[build.environment]
-  NODE_VERSION = "20"
+[[redirects]]
+  from = "/api/*"
+  to = "https://renewable-moses-olympus-dangerous.trycloudflare.com/api/:splat"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/*"
