@@ -775,13 +775,21 @@ const seedDatabase = async () => {
     console.log(`  Technician:   rahul.tech@homeserve.tech       / TechPassword123!`);
     console.log(`======================================================\n`);
 
-    await disconnectDB();
-    console.log('[Seed] Database disconnected cleanly.');
-    process.exit(0);
+    if (require.main === module) {
+      await disconnectDB();
+      console.log('[Seed] Database disconnected cleanly.');
+      process.exit(0);
+    }
   } catch (err) {
     console.error('[Seed] Error seeding database:', err);
-    process.exit(1);
+    if (require.main === module) {
+      process.exit(1);
+    }
   }
 };
 
-seedDatabase();
+if (require.main === module) {
+  seedDatabase();
+}
+
+module.exports = { seedDatabase };

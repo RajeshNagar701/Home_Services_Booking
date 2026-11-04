@@ -31,10 +31,10 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^10.3.1",
-    "razorpay": "^2.9.4"
+    "razorpay": "^2.9.4",
+    "mongodb-memory-server": "^11.3.0"
   },
   "devDependencies": {
-    "mongodb-memory-server": "^11.3.0",
     "nodemon": "^3.1.7",
     "supertest": "^7.3.1"
   }

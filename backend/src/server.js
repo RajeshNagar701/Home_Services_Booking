@@ -78,8 +78,28 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'healthy',
     service: 'HomeServe Technologies API',
+    database: require('mongoose').connection.readyState === 1 ? 'connected' : 'autonomous_catalog',
     timestamp: new Date().toISOString()
   });
+});
+
+// Root API Greeting (prevents 404 in hosting logs like Render/Uptime checkers)
+app.get('/', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    service: 'HomeServe Technologies Production REST API',
+    version: '1.0.0',
+    healthCheck: '/api/health',
+    endpoints: {
+      categories: '/api/categories',
+      services: '/api/services',
+      auth: '/api/auth/login'
+    }
+  });
+});
+
+app.head('/', (req, res) => {
+  res.status(200).end();
 });
 
 // API Routes

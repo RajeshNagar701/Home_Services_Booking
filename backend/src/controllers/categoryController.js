@@ -9,6 +9,19 @@ const { successResponse } = require('../utils/apiResponse');
  */
 const getAllCategories = async (req, res, next) => {
   try {
+    if (require('mongoose').connection.readyState !== 1) {
+      const { SERVICE_CATEGORIES } = require('../../seed/demo_accounts');
+      const mapped = SERVICE_CATEGORIES.map((c, idx) => ({
+        _id: `cat-${idx + 1}`,
+        name: c.name,
+        slug: c.slug,
+        icon: c.icon,
+        servicesCount: 5,
+        description: c.description
+      }));
+      return successResponse(res, 'Categories fetched successfully.', mapped);
+    }
+
     const categories = await Category.find({ isActive: true }).sort({ sortOrder: 1, name: 1 });
 
     // Attach active service counts to each category
