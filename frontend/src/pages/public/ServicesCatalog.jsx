@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import api from '../../services/api';
+import { MOCK_CATEGORIES, MOCK_SERVICES } from '../../services/mockData';
 import StarRating from '../../components/common/StarRating';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
@@ -23,9 +24,14 @@ const ServicesCatalog = () => {
     const fetchCategories = async () => {
       try {
         const res = await api.get('/categories');
-        if (res.success) setCategories(res.data);
+        if (res && res.success && Array.isArray(res.data) && res.data.length > 0) {
+          setCategories(res.data);
+        } else {
+          setCategories(MOCK_CATEGORIES);
+        }
       } catch (err) {
-        console.warn('Error fetching categories:', err.message);
+        console.warn('Using fallback categories:', err.message);
+        setCategories(MOCK_CATEGORIES);
       }
     };
     fetchCategories();
@@ -45,12 +51,28 @@ const ServicesCatalog = () => {
         params.append('limit', 12);
 
         const res = await api.get(`/services?${params.toString()}`);
-        if (res.success) {
+        if (res && res.success && Array.isArray(res.data) && res.data.length > 0) {
           setServices(res.data);
           setTotalCount(res.pagination?.total || res.data.length);
+        } else {
+          let list = [...MOCK_SERVICES];
+          if (selectedCategory) {
+            list = list.filter((s) => s.category.slug === selectedCategory || s.category._id === selectedCategory);
+          }
+          if (searchKeyword) {
+            const q = searchKeyword.toLowerCase();
+            list = list.filter((s) => s.title.toLowerCase().includes(q) || s.description.toLowerCase().includes(q));
+          }
+          if (selectedSort === 'price_asc') list.sort((a, b) => a.discountPrice - b.discountPrice);
+          if (selectedSort === 'price_desc') list.sort((a, b) => b.discountPrice - a.discountPrice);
+          if (selectedSort === 'rating') list.sort((a, b) => b.rating - a.rating);
+          setServices(list);
+          setTotalCount(list.length);
         }
       } catch (err) {
-        console.warn('Error fetching services:', err.message);
+        console.warn('Using fallback services catalog:', err.message);
+        setServices(MOCK_SERVICES);
+        setTotalCount(MOCK_SERVICES.length);
       } finally {
         setIsLoading(false);
       }

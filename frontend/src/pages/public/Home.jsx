@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import { MOCK_CATEGORIES, MOCK_SERVICES } from '../../services/mockData';
 import StarRating from '../../components/common/StarRating';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
@@ -18,54 +19,21 @@ const Home = () => {
           api.get('/categories'),
           api.get('/services?limit=6&sort=popular')
         ]);
-        if (catRes.success) setCategories(catRes.data);
-        if (srvRes.success) setPopularServices(srvRes.data);
+        if (catRes && catRes.success && Array.isArray(catRes.data) && catRes.data.length > 0) {
+          setCategories(catRes.data);
+        } else {
+          setCategories(MOCK_CATEGORIES);
+        }
+
+        if (srvRes && srvRes.success && Array.isArray(srvRes.data) && srvRes.data.length > 0) {
+          setPopularServices(srvRes.data);
+        } else {
+          setPopularServices(MOCK_SERVICES.slice(0, 6));
+        }
       } catch (err) {
-        console.warn('Error fetching homepage data, using fallback data:', err.message);
-        // Fallback default categories if offline
-        setCategories([
-          { _id: '1', name: 'Electrical Services', slug: 'electrical-services', icon: 'bi-lightning-charge', servicesCount: 6 },
-          { _id: '2', name: 'Plumbing Solutions', slug: 'plumbing-solutions', icon: 'bi-droplet-half', servicesCount: 8 },
-          { _id: '3', name: 'AC & HVAC Servicing', slug: 'ac-hvac-maintenance', icon: 'bi-fan', servicesCount: 5 },
-          { _id: '4', name: 'Deep Cleaning', slug: 'deep-cleaning', icon: 'bi-stars', servicesCount: 12 },
-          { _id: '5', name: 'Appliance Repair', slug: 'appliance-repair', icon: 'bi-tv', servicesCount: 7 },
-          { _id: '6', name: 'Pest Control', slug: 'pest-control', icon: 'bi-shield-check', servicesCount: 4 }
-        ]);
-        setPopularServices([
-          {
-            _id: 's1',
-            title: 'Split & Window AC Deep Jet Servicing & Gas Top-Up',
-            slug: 'ac-deep-jet-servicing',
-            price: 999,
-            discountPrice: 849,
-            rating: 4.9,
-            durationMinutes: 60,
-            coverImage: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=600&auto=format&fit=crop&q=80',
-            provider: { businessName: 'Apex Home Solutions' }
-          },
-          {
-            _id: 's2',
-            title: '3BHK Eco-Friendly Deep Home Cleaning & Sanitization',
-            slug: '3bhk-deep-cleaning-sanitization',
-            price: 3499,
-            discountPrice: 2899,
-            rating: 4.9,
-            durationMinutes: 240,
-            coverImage: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&auto=format&fit=crop&q=80',
-            provider: { businessName: 'SparkleClean Facility Management' }
-          },
-          {
-            _id: 's3',
-            title: 'Complete Home Electrical Safety Inspection & Wiring Repair',
-            slug: 'electrical-inspection-wiring-repair',
-            price: 799,
-            discountPrice: 649,
-            rating: 4.8,
-            durationMinutes: 90,
-            coverImage: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&auto=format&fit=crop&q=80',
-            provider: { businessName: 'Apex Home Solutions' }
-          }
-        ]);
+        console.warn('Using fallback catalog data:', err.message);
+        setCategories(MOCK_CATEGORIES);
+        setPopularServices(MOCK_SERVICES.slice(0, 6));
       } finally {
         setIsLoading(false);
       }

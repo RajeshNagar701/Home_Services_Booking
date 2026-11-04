@@ -44,6 +44,7 @@ export const AuthProvider = ({ children }) => {
       const res = await api.post('/auth/login', { email, password });
       if (res.success && res.data) {
         localStorage.setItem('homeserve_token', res.data.token);
+        localStorage.setItem('homeserve_user', JSON.stringify(res.data.user));
         setToken(res.data.token);
         setUser(res.data.user);
         setProfile(res.data.profile);
@@ -63,6 +64,7 @@ export const AuthProvider = ({ children }) => {
       const res = await api.post('/auth/register', userData);
       if (res.success && res.data) {
         localStorage.setItem('homeserve_token', res.data.token);
+        localStorage.setItem('homeserve_user', JSON.stringify(res.data.user));
         setToken(res.data.token);
         setUser(res.data.user);
         setProfile(res.data.profile);

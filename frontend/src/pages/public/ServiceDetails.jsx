@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import { MOCK_SERVICES } from '../../services/mockData';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import StarRating from '../../components/common/StarRating';
@@ -52,12 +53,17 @@ const ServiceDetails = () => {
     const fetchServiceDetails = async () => {
       try {
         const res = await api.get(`/services/${id}`);
-        if (res.success && res.data) {
-          setService(res.data.service);
+        if (res && res.success && res.data) {
+          setService(res.data.service || res.data);
           setReviews(res.data.reviews || []);
+        } else {
+          const found = MOCK_SERVICES.find((s) => s._id === id || s.slug === id) || MOCK_SERVICES[0];
+          setService(found);
         }
       } catch (err) {
-        console.warn('Error fetching service:', err.message);
+        console.warn('Using fallback service details:', err.message);
+        const found = MOCK_SERVICES.find((s) => s._id === id || s.slug === id) || MOCK_SERVICES[0];
+        setService(found);
       } finally {
         setIsLoading(false);
       }
