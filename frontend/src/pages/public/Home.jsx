@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
-import { MOCK_CATEGORIES, MOCK_SERVICES } from '../../services/mockData';
+import { MOCK_CATEGORIES, MOCK_SERVICES, MOCK_VERIFIED_PROS } from '../../services/mockData';
 import StarRating from '../../components/common/StarRating';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
@@ -9,15 +9,17 @@ const Home = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [popularServices, setPopularServices] = useState([]);
+  const [verifiedPros, setVerifiedPros] = useState(MOCK_VERIFIED_PROS);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const [catRes, srvRes] = await Promise.all([
-          api.get('/categories'),
-          api.get('/services?limit=6&sort=popular')
+        const [catRes, srvRes, proRes] = await Promise.all([
+          api.get('/categories').catch(() => null),
+          api.get('/services?limit=6&sort=popular').catch(() => null),
+          api.get('/providers/public/verified').catch(() => null)
         ]);
         if (catRes && catRes.success && Array.isArray(catRes.data) && catRes.data.length > 0) {
           setCategories(catRes.data);
@@ -30,10 +32,29 @@ const Home = () => {
         } else {
           setPopularServices(MOCK_SERVICES.slice(0, 6));
         }
+
+        if (proRes && proRes.success && Array.isArray(proRes.data) && proRes.data.length > 0) {
+          const mergedPros = proRes.data.map((prov, index) => {
+            const mockFallback = MOCK_VERIFIED_PROS[index % MOCK_VERIFIED_PROS.length];
+            return {
+              ...mockFallback,
+              ...prov,
+              badges: mockFallback.badges,
+              badgeColor: mockFallback.badgeColor,
+              avatar: mockFallback.avatar,
+              specialties: mockFallback.specialties,
+              responseTime: mockFallback.responseTime
+            };
+          });
+          setVerifiedPros(mergedPros);
+        } else {
+          setVerifiedPros(MOCK_VERIFIED_PROS);
+        }
       } catch (err) {
         console.warn('Using fallback catalog data:', err.message);
         setCategories(MOCK_CATEGORIES);
         setPopularServices(MOCK_SERVICES.slice(0, 6));
+        setVerifiedPros(MOCK_VERIFIED_PROS);
       } finally {
         setIsLoading(false);
       }
@@ -328,6 +349,167 @@ const Home = () => {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. VERIFIED SERVICE PROVIDERS SECTION */}
+      <section className="py-5 bg-white border-top border-bottom" id="verified-pros">
+        <div className="container py-3">
+          <div className="text-center max-w-xl mx-auto mb-5">
+            <span className="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill fw-semibold mb-2">
+              <i className="bi bi-shield-fill-check me-1"></i> 100% Background-Checked &amp; Certified
+            </span>
+            <h2 className="fw-bold text-dark mt-2">Meet Our Verified Service Providers</h2>
+            <p className="text-muted">
+              Every partner passes strict police verification, Aadhaar identity screening, certified trade testing, and continuous 4.8+ quality monitoring.
+            </p>
+          </div>
+
+          {/* Guarantee Badges Row */}
+          <div className="row g-3 justify-content-center mb-5">
+            <div className="col-6 col-md-3">
+              <div className="p-3 text-center rounded-3 bg-light border border-light-subtle h-100">
+                <i className="bi bi-person-badge text-primary fs-3 d-block mb-1"></i>
+                <span className="fw-bold small d-block text-dark">Police Cleared</span>
+                <span className="text-muted" style={{ fontSize: '0.75rem' }}>100% Background Checked</span>
+              </div>
+            </div>
+            <div className="col-6 col-md-3">
+              <div className="p-3 text-center rounded-3 bg-light border border-light-subtle h-100">
+                <i className="bi bi-patch-check-fill text-success fs-3 d-block mb-1"></i>
+                <span className="fw-bold small d-block text-dark">Trade Certified</span>
+                <span className="text-muted" style={{ fontSize: '0.75rem' }}>Tested &amp; Licensed Experts</span>
+              </div>
+            </div>
+            <div className="col-6 col-md-3">
+              <div className="p-3 text-center rounded-3 bg-light border border-light-subtle h-100">
+                <i className="bi bi-shield-shaded text-warning fs-3 d-block mb-1"></i>
+                <span className="fw-bold small d-block text-dark">Insured Service</span>
+                <span className="text-muted" style={{ fontSize: '0.75rem' }}>Up to ₹10,000 Cover</span>
+              </div>
+            </div>
+            <div className="col-6 col-md-3">
+              <div className="p-3 text-center rounded-3 bg-light border border-light-subtle h-100">
+                <i className="bi bi-clock-history text-info fs-3 d-block mb-1"></i>
+                <span className="fw-bold small d-block text-dark">On-Time Arrival</span>
+                <span className="text-muted" style={{ fontSize: '0.75rem' }}>Live GPS Tracking</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Provider Cards Grid */}
+          <div className="row g-4">
+            {verifiedPros.map((pro) => (
+              <div key={pro._id || pro.id} className="col-lg-4 col-md-6">
+                <div className="hs-card h-100 p-4 d-flex flex-column justify-content-between position-relative">
+                  <div>
+                    {/* Header with Avatar & Rating */}
+                    <div className="d-flex align-items-center gap-3 mb-3">
+                      <div className="position-relative">
+                        <img
+                          src={pro.avatar || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=150&auto=format&fit=crop&q=80'}
+                          alt={pro.businessName}
+                          className="rounded-circle object-fit-cover shadow-sm border border-2 border-white"
+                          style={{ width: '60px', height: '60px' }}
+                        />
+                        <span
+                          className="position-absolute bottom-0 end-0 bg-success text-white rounded-circle d-flex align-items-center justify-content-center border border-2 border-white"
+                          style={{ width: '20px', height: '20px', fontSize: '0.65rem' }}
+                          title="Verified Partner"
+                        >
+                          <i className="bi bi-check-lg"></i>
+                        </span>
+                      </div>
+                      <div className="flex-grow-1 overflow-hidden">
+                        <h6 className="fw-bold text-dark mb-1 text-truncate">{pro.businessName}</h6>
+                        <span className="badge bg-primary bg-opacity-10 text-primary small py-1 px-2 rounded-pill fw-medium">
+                          {pro.categoryName || 'Home Maintenance'}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Stats strip */}
+                    <div className="d-flex align-items-center justify-content-between bg-light rounded-3 p-2 mb-3 small">
+                      <div className="d-flex align-items-center gap-1">
+                        <i className="bi bi-star-fill text-warning"></i>
+                        <span className="fw-bold text-dark">{pro.rating || 4.8}</span>
+                        <span className="text-muted">({pro.totalReviews || 35}+ reviews)</span>
+                      </div>
+                      <div className="text-muted">
+                        <i className="bi bi-briefcase me-1"></i>
+                        <strong>{pro.experience || 5}+ yrs</strong> exp
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-muted small mb-3" style={{ minHeight: '38px' }}>
+                      {pro.description || 'Certified professional provider committed to premium quality and doorstep satisfaction.'}
+                    </p>
+
+                    {/* Address & Response */}
+                    <div className="mb-3 small text-secondary">
+                      <div className="d-flex align-items-center gap-1 mb-1">
+                        <i className="bi bi-geo-alt-fill text-danger small"></i>
+                        <span className="text-truncate">{pro.address || 'Ahmedabad, Gujarat'}</span>
+                      </div>
+                      <div className="d-flex align-items-center gap-1">
+                        <i className="bi bi-lightning-charge-fill text-warning small"></i>
+                        <span>Response: <strong>{pro.responseTime || '< 45 Mins'}</strong></span>
+                      </div>
+                    </div>
+
+                    {/* Badges */}
+                    <div className="d-flex flex-wrap gap-1 mb-3">
+                      {(pro.badges || ['Police Verified', 'GST Registered']).map((b, bIdx) => (
+                        <span
+                          key={bIdx}
+                          className="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-10 rounded-pill small"
+                          style={{ fontSize: '0.7rem' }}
+                        >
+                          ✓ {b}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Action Link */}
+                  <div className="pt-2 border-top">
+                    <Link
+                      to="/services"
+                      className="btn btn-outline-primary btn-sm rounded-pill w-100 fw-semibold py-2 d-flex align-items-center justify-content-center gap-2"
+                    >
+                      <span>Explore Services</span>
+                      <i className="bi bi-arrow-right"></i>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Quality Assurance Callout */}
+          <div className="mt-5 p-4 rounded-4 bg-primary bg-opacity-10 border border-primary border-opacity-25 d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+            <div className="d-flex align-items-center gap-3">
+              <div
+                className="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center flex-shrink-0"
+                style={{ width: '50px', height: '50px', fontSize: '1.5rem' }}
+              >
+                <i className="bi bi-award-fill"></i>
+              </div>
+              <div>
+                <h6 className="fw-bold text-dark mb-1">Are you a professional service technician or agency?</h6>
+                <p className="text-muted small mb-0">
+                  Join our certified partner network. Complete KYC verification, receive doorstep leads, and get weekly direct payouts.
+                </p>
+              </div>
+            </div>
+            <Link
+              to="/register?role=provider"
+              className="btn btn-primary rounded-pill px-4 py-2 fw-semibold flex-shrink-0"
+            >
+              Partner with Us &rarr;
+            </Link>
           </div>
         </div>
       </section>

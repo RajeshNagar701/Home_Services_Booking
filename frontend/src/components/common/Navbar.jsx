@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 
@@ -7,7 +7,22 @@ const Navbar = () => {
   const { user, isAuthenticated, logout, login } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  const handleHashClick = (e, hashId) => {
+    if (location.pathname === '/') {
+      e.preventDefault();
+      const el = document.getElementById(hashId);
+      if (el) {
+        const navOffset = 80;
+        const elPos = el.getBoundingClientRect().top;
+        const offsetPos = elPos + window.pageYOffset - navOffset;
+        window.scrollTo({ top: Math.max(0, offsetPos), behavior: 'smooth' });
+        window.history.pushState(null, '', `/#${hashId}`);
+      }
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -104,14 +119,22 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <a href="/#how-it-works" className="nav-link text-secondary px-3">
+              <Link
+                to="/#how-it-works"
+                onClick={(e) => handleHashClick(e, 'how-it-works')}
+                className="nav-link text-secondary px-3"
+              >
                 How It Works
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="/#verified-pros" className="nav-link text-secondary px-3">
+              <Link
+                to="/#verified-pros"
+                onClick={(e) => handleHashClick(e, 'verified-pros')}
+                className="nav-link text-secondary px-3"
+              >
                 Verified Pros
-              </a>
+              </Link>
             </li>
           </ul>
 

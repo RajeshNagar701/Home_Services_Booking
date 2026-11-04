@@ -692,3 +692,103 @@ export const MOCK_USERS = {
     token: 'demo-jwt-tech-token'
   }
 };
+
+export const MOCK_VERIFIED_PROS = [
+  {
+    _id: 'prov-1',
+    businessName: 'Apex Home Solutions',
+    categoryName: 'Electrical & Multi-Trade',
+    address: 'Satellite, Ahmedabad',
+    rating: 4.8,
+    totalReviews: 46,
+    experience: 8,
+    completedJobs: 320,
+    badges: ['Police Verified', 'GST Registered', 'ISO Certified'],
+    badgeColor: 'primary',
+    avatar: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=150&auto=format&fit=crop&q=80',
+    description: 'Certified electrical and home repair specialists with fast response times and 100% genuine spares.',
+    specialties: ['Ceiling Fan & Wiring', 'Safety Audits', 'Switchboard Repair'],
+    responseTime: '< 30 Mins'
+  },
+  {
+    _id: 'prov-2',
+    businessName: 'SparkleClean Facility Management',
+    categoryName: 'Full Home Deep Cleaning',
+    address: 'Anandnagar, Ahmedabad',
+    rating: 4.9,
+    totalReviews: 38,
+    experience: 6,
+    completedJobs: 285,
+    badges: ['Eco-Certified', 'Police Verified', '100% Insured'],
+    badgeColor: 'success',
+    avatar: 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=150&auto=format&fit=crop&q=80',
+    description: 'Hospital-grade sanitization, professional equipment, and non-hazardous eco-friendly agents.',
+    specialties: ['Kitchen Degreasing', 'Bathroom Sanitization', 'Sofa Shampooing'],
+    responseTime: 'Same Day Slot'
+  },
+  {
+    _id: 'prov-3',
+    businessName: 'CoolBreeze AC Care',
+    categoryName: 'AC Servicing & HVAC Diagnostics',
+    address: 'Bopal Cross Road, Ahmedabad',
+    rating: 4.9,
+    totalReviews: 36,
+    experience: 7,
+    completedJobs: 410,
+    badges: ['HVAC Certified', 'Police Verified', '30-Day Guarantee'],
+    badgeColor: 'info',
+    avatar: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=150&auto=format&fit=crop&q=80',
+    description: 'Doorstep AC foam jet wash, precision gas charging, PCB board diagnostics and installation.',
+    specialties: ['AC Jet Cleaning', 'Gas Leak Repair', 'Inverter PCB Check'],
+    responseTime: '< 45 Mins'
+  },
+  {
+    _id: 'prov-4',
+    businessName: 'QuickFix Appliance Pros',
+    categoryName: 'Appliance Repair & Overhaul',
+    address: 'CG Road, Navrangpura, Ahmedabad',
+    rating: 4.9,
+    totalReviews: 52,
+    experience: 10,
+    completedJobs: 560,
+    badges: ['OEM Certified', 'Police Verified', '90-Day Spares Warranty'],
+    badgeColor: 'warning',
+    avatar: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=150&auto=format&fit=crop&q=80',
+    description: 'Factory-trained technicians specialized in double-door fridges, washing machines, and microwave ovens.',
+    specialties: ['Refrigerator Cooling', 'Drum Motor Repair', 'Microwave Magnetron'],
+    responseTime: '< 60 Mins'
+  },
+  {
+    _id: 'prov-5',
+    businessName: 'Gujarat Plumbers & Sanitary Works',
+    categoryName: 'Sanitary & Drainage Solutions',
+    address: 'Shivalik Plaza, Vastrapur, Ahmedabad',
+    rating: 4.8,
+    totalReviews: 31,
+    experience: 12,
+    completedJobs: 490,
+    badges: ['Master Plumber', 'Police Verified', 'Rapid Emergency'],
+    badgeColor: 'primary',
+    avatar: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=150&auto=format&fit=crop&q=80',
+    description: 'Comprehensive plumbing, pressurized water leakage inspection, basin fittings, and drain clearance.',
+    specialties: ['Leakage Detection', 'Tap & Basin Fitting', 'Drain Unclogging'],
+    responseTime: '< 30 Mins'
+  },
+  {
+    _id: 'prov-6',
+    businessName: 'SafeHome Pest Management',
+    categoryName: 'Organic Pest & Termite Control',
+    address: 'Fortune Business Hub, Gota, Ahmedabad',
+    rating: 4.8,
+    totalReviews: 41,
+    experience: 11,
+    completedJobs: 375,
+    badges: ['Govt Licensed', 'Police Verified', 'Herbal & Odorless'],
+    badgeColor: 'danger',
+    avatar: 'https://images.unsplash.com/photo-1584467735871-8e85353a8413?w=150&auto=format&fit=crop&q=80',
+    description: 'Non-toxic, safe for children and pets. 100% eradication guarantee with post-treatment inspection.',
+    specialties: ['Cockroach Herbal Gel', 'Anti-Termite Drilling', 'Bed Bug Heat Treatment'],
+    responseTime: 'Same Day Slot'
+  }
+];
+

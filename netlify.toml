@@ -5,7 +5,7 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://renewable-moses-olympus-dangerous.trycloudflare.com/api/:splat"
+  to = "https://home-services-booking-hg7f.onrender.com/api/:splat"
   status = 200
   force = true
 

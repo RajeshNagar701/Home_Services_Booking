@@ -9,10 +9,16 @@ const {
   getProviderDocuments,
   uploadProviderDocument,
   getProviderTechnicians,
-  createProviderTechnician
+  createProviderTechnician,
+  getPublicVerifiedProviders
 } = require('../controllers/providerController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 const { ROLES } = require('../config/constants');
+
+// Public endpoints
+router.get('/public/verified', getPublicVerifiedProviders);
+
+// Protected endpoints
 
 router.get('/dashboard-stats', protect, authorize(ROLES.PROVIDER), getProviderDashboardStats);
 router.get('/profile', protect, authorize(ROLES.PROVIDER), getProviderProfile);
